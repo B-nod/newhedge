@@ -1,8 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import Image from "next/image";
 import Link from "next/link";
+
+import GalleryGridWithLightbox from "./GalleryGridWithLightbox";
 
 export const runtime = "nodejs";
 
@@ -71,39 +72,7 @@ export default async function GalleryPage() {
               there and refresh.
             </div>
           ) : (
-            <>
-             
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
-                {images.map((file) => {
-                  const src = `/gallery/${encodeURIComponent(file)}`;
-              
-
-                  return (
-                    <a
-                      key={file}
-                      href={src}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 bg-black aspect-[3/4]"
-                     
-                    >
-                      <Image
-                        src={src}
-                        alt={file}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </>
+            <GalleryGridWithLightbox images={images} />
           )}
         </div>
       </section>
