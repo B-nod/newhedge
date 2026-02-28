@@ -1,0 +1,109 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        
+    - name: Create deployment package
+      run: |
+        mkdir deploy
+        cp -r .next/standalone/* deploy/
+        cp -r .next/static deploy/.next/
+        cp -r public deploy/
+        cp package.json deploy/
+        cp server.js deploy/
+        cp .htaccess deploy/
+        cp production.env deploy/.env.production
+        
+    - name: Create deployment zip
+      run: |
+        cd deploy
+        zip -r ../landscaper-deploy.zip .
+        
+    - name: Deploy to Hostinger via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deploy/
+        server-dir: ${{ secrets.FTP_REMOTE_PATH }}
+        exclude: "*.zip"
+        
+    - name: Deploy to Hostinger via SSH (Alternative)
+      if: ${{ secrets.SSH_HOST != '' }}
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT || 22 }}
+        script: |
+          cd ${{ secrets.SSH_REMOTE_PATH }}
+          
+          # Backup current deployment
+          if [ -d "backup" ]; then
+            rm -rf backup
+          fi
+          mkdir backup
+          cp -r . backup/ 2>/dev/null || true
+          
+          # Extract new deployment
+          if [ -f "landscaper-deploy.zip" ]; then
+            unzip -o landscaper-deploy.zip
+            rm landscaper-deploy.zip
+          fi
+          
+          # Install dependencies
+          source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.SSH_REMOTE_PATH }}/20/bin/activate 2>/dev/null || true
+          npm install --production
+          
+          # Restart application
+          pkill -f "node server.js" 2>/dev/null || true
+          sleep 2
+          nohup node server.js > app.log 2>&1 &
+          
+          echo "Deployment completed successfully!"
+          
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "✅ Deployment to Hostinger completed successfully!"
+        else
+          echo "❌ Deployment to Hostinger failed!"
+        fi
+        
+    - name: Health check
+      if: success()
+      run: |
+        sleep 30
+        curl -f ${{ secrets.APP_URL }}/api/health || echo "Health check failed"

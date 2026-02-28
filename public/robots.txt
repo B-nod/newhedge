@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Host: https://hedgegardening.co.uk/
+Sitemap: https://hedgegardening.co.uk/sitemap.xml
