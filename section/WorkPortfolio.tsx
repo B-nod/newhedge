@@ -1,14 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 interface Project {
   id: string;
   title: string;
   description: string;
+  location: string;
   keyPoints: string[];
   gallery: string[];
 }
@@ -18,6 +19,7 @@ const projects: Project[] = [
     id: "1",
     title: "Hedge Trimming & Lawn Care",
     description: "Professional care for hedges and lawns all year round.",
+    location: "London",
     keyPoints: [
       "Regular & one-off hedge trimming",
       "Lawn mowing & edging",
@@ -35,6 +37,7 @@ const projects: Project[] = [
     id: "2",
     title: "Landscaping",
     description: "Complete garden transformations and modern outdoor spaces.",
+    location: "Manchester",
     keyPoints: [
       "Garden design & planning",
       "Patios, paths & flag laying",
@@ -48,6 +51,7 @@ const projects: Project[] = [
     id: "3",
     title: "Fence Work & Painting",
     description: "Installation, repair and finishing of fencing and decking.",
+    location: "Birmingham",
     keyPoints: [
       "New fence & gate installation",
       "Fence & deck repairs",
@@ -61,6 +65,7 @@ const projects: Project[] = [
     id: "4",
     title: "Tree Cutting",
     description: "Safe pruning and removal of small to medium garden trees.",
+    location: "Leeds",
     keyPoints: [
       "Crown reduction & thinning",
       "Tree pruning & shaping",
@@ -79,6 +84,7 @@ const projects: Project[] = [
     id: "5",
     title: "Transport & Removal",
     description: "Man-with-a-van style transport and moving help.",
+    location: "Bristol",
     keyPoints: [
       "Furniture & appliance moves",
       "House / flat clear-outs",
@@ -95,6 +101,7 @@ const projects: Project[] = [
     id: "6",
     title: "Power Wash & Cleaning",
     description: "Deep cleaning of outdoor surfaces and structures.",
+    location: "Sheffield",
     keyPoints: [
       "Driveways & patios",
       "Decking & fencing",
@@ -106,28 +113,11 @@ const projects: Project[] = [
   },
 ];
 
-const categories = [
-  "All",
-  "Hedge Trimming & Lawn Care",
-  "Landscaping",
-  "Fence Work & Painting",
-  "Tree Cutting",
-  "Transport & Removal",
-  "Power Wash & Cleaning",
-];
-
 export default function WorksPortfolioSection() {
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const filteredProjects =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.title === activeCategory);
-
   return (
     <section id="gallery" className="py-16 sm:py-20 lg:py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header + Filters */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -138,29 +128,10 @@ export default function WorksPortfolioSection() {
           <p className="text-sm font-medium text-gray-600 mb-4 tracking-wider uppercase">
             Our Recent Works
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             Expertise in Landscape Design &{" "}
             <span className="text-emerald-600">Garden Care</span>
           </h2>
-
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`
-                  px-5 py-2.5 rounded-full text-sm sm:text-base font-medium transition-all
-                  ${
-                    activeCategory === cat
-                      ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
-                  }
-                `}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
         </motion.div>
 
         {/* Grid */}
@@ -169,7 +140,7 @@ export default function WorksPortfolioSection() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8"
         >
           <AnimatePresence>
-            {filteredProjects.map((project, idx) => (
+            {projects.map((project, idx) => (
               <ProjectCard
                 key={project.id}
                 project={project}
@@ -214,6 +185,10 @@ function ProjectCard({ project, delay }: ProjectCardProps) {
 
         {/* Content */}
         <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
+          <div className="flex items-center gap-1.5 text-white/95 text-xs sm:text-sm mb-2">
+            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" aria-hidden />
+            <span>{project.location}</span>
+          </div>
           <h3 className="text-white text-xl sm:text-2xl font-bold drop-shadow-md mb-1.5">
             {project.title}
           </h3>
