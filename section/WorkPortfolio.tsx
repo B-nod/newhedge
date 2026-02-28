@@ -49,7 +49,7 @@ const projects: Project[] = [
   },
   {
     id: "3",
-    title: "Fence Work & Painting",
+    title: "Fence Installation, Repair & Painting",
     description: "Installation, repair and finishing of fencing and decking.",
     location: "Birmingham",
     keyPoints: [
@@ -99,7 +99,7 @@ const projects: Project[] = [
   },
   {
     id: "6",
-    title: "Power Wash & Cleaning",
+    title: "Power Wash & Drainage Maintenance",
     description: "Deep cleaning of outdoor surfaces and structures.",
     location: "Sheffield",
     keyPoints: [
