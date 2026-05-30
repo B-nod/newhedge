@@ -141,8 +141,8 @@ export default function FooterSection() {
         >
           <p className="text-gray-700 text-base sm:text-lg">
             Call Us:{" "}
-            <a href="tel:07346279113" className="font-semibold">
-              07346 279 113
+            <a href="tel:07756933815" className="font-semibold">
+              07756 933815
             </a>
           </p>
           <p className="text-gray-600 text-sm sm:text-base">
@@ -230,7 +230,7 @@ export default function FooterSection() {
           opacity: showScrollTop ? 1 : 0,
           scale: showScrollTop ? 1 : 0,
         }}
-        href="https://wa.me/447346279113"
+        href="https://wa.me/447756933815"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-24 right-9 w-12 h-12 bg-green-800 hover:bg-green-700 text-white rounded-full shadow-lg flex items-center justify-center z-50 transition-colors duration-300"

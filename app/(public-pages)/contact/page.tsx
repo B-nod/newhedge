@@ -76,12 +76,12 @@ export default function ContactPage() {
                     WhatsApp
                   </h3>
                   <a
-                    href="https://wa.me/447346279113"
+                    href="https://wa.me/447756933815"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-green-600 hover:underline"
                   >
-                    +44 7346 279113
+                    +44 7756 933815
                   </a>
                 </div>
               </li>
