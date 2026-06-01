@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import AppDataSource from "../../../../lib/db";
 import { Testimonial } from "../../../../lib/entities/Testimonial";
-import { verifyAdminAuth } from "../../../../lib/verify-auth";
 
 // Initialize the database connection
 const initializeDb = async () => {
@@ -11,14 +10,13 @@ const initializeDb = async () => {
     console.log("Database connection initialized.");
   }
   return AppDataSource.getRepository(Testimonial);
-  
 };
 
 // GET: /api/testimonials/all - Get all testimonials (including unapproved)
 export async function GET(request: Request) {
-  if (!verifyAdminAuth(request)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!verifyAdminAuth(request)) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   const { searchParams } = new URL(request.url);
   const approvedParam = searchParams.get("approved");
@@ -34,7 +32,7 @@ export async function GET(request: Request) {
     console.error("Error fetching all testimonials:", error);
     return NextResponse.json(
       { error: "Failed to fetch testimonials" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

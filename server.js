@@ -1,6 +1,4 @@
-// Force disable WASM for undici before anything else
 process.env.UNDICI_NO_WASM = "1";
-process.env.NODE_OPTIONS = "--no-experimental-fetch";
 
 
 
