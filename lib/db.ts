@@ -1,12 +1,14 @@
 import "reflect-metadata";
+import * as dotenv from "dotenv";
 import { DataSource } from "typeorm";
 import { Testimonial } from "./entities/Testimonial";
 import { CreateTestimonial1780352416000 } from "./migrations/1780352416000-CreateTestimonial";
 
+dotenv.config();
 const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3307,
+  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306,
   username: process.env.DB_USER || process.env.DB_USERNAME,
   password: process.env.DB_PASS || process.env.DB_PASSWORD,
   database: process.env.DB_NAME || process.env.DB_DATABASE,

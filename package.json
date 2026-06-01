@@ -11,8 +11,8 @@
     "start": "cross-env NODE_ENV=production PORT=3001 HOSTNAME=localhost node server.js",
     "start:standalone": "cross-env NODE_ENV=production PORT=3001 node .next/standalone/server.js",
     "lint": "eslint",
-    "migration:run": "typeorm-ts-node-commonjs migration:run -d lib/db.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d lib/db.ts"
+    "migration:run": "TS_NODE_PROJECT=tsconfig.typeorm.json typeorm-ts-node-commonjs migration:run -d lib/db.ts",
+    "migration:revert": "TS_NODE_PROJECT=tsconfig.typeorm.json typeorm-ts-node-commonjs migration:revert -d lib/db.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -49,6 +49,7 @@
     "postcss-import": "^16.1.1",
     "postcss-nesting": "^13.0.2",
     "tailwindcss": "^4.1.14",
+    "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   }
 }
