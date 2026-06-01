@@ -56,10 +56,7 @@ export async function GET() {
   } catch (error) {
     console.error("Instagram API Error:", error);
     return NextResponse.json(
-      {
-        error: "Failed to fetch Instagram posts",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: "Failed to fetch Instagram posts" },
       { status: 500 }
     );
   }

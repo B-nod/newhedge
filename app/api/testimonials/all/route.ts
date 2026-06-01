@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import AppDataSource from "../../../../lib/db";
 import { Testimonial } from "../../../../lib/entities/Testimonial";
+import { verifyAdminAuth } from "../../../../lib/verify-auth";
 
 // Initialize the database connection
 const initializeDb = async () => {
@@ -15,6 +16,10 @@ const initializeDb = async () => {
 
 // GET: /api/testimonials/all - Get all testimonials (including unapproved)
 export async function GET(request: Request) {
+  if (!verifyAdminAuth(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const approvedParam = searchParams.get("approved");
   try {

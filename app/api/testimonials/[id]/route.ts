@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import AppDataSource from "../../../../lib/db";
 import { Testimonial } from "../../../../lib/entities/Testimonial";
+import { verifyAdminAuth } from "../../../../lib/verify-auth";
 
 // Initialize the database connection
 const initializeDb = async () => {
@@ -15,15 +16,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // const params = await request.json();
-    // TODO: Add admin authentication
-    // const session = await getServerSession(authOptions);
-    // if (!session?.user?.isAdmin) {
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!verifyAdminAuth(request)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const id = parseInt((await params).id);
     if (isNaN(id)) {

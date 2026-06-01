@@ -1,21 +1,32 @@
+import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  // Check if the current path is an admin route
+async function isValidToken(token: string): Promise<boolean> {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) return false;
+  try {
+    await jwtVerify(token, new TextEncoder().encode(secret));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
   const isLoginPage = request.nextUrl.pathname === "/admin/login";
-
-  // Get the token from cookies
   const token = request.cookies.get("admin_token")?.value;
 
-  // If on admin route and no token, redirect to login
-  if (isAdminRoute && !isLoginPage && !token) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+  if (isAdminRoute && !isLoginPage) {
+    if (!token || !(await isValidToken(token))) {
+      const response = NextResponse.redirect(new URL("/admin/login", request.url));
+      response.cookies.delete("admin_token");
+      return response;
+    }
   }
 
-  // If on login page but already authenticated, redirect to admin
-  if (isLoginPage && token) {
+  if (isLoginPage && token && (await isValidToken(token))) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 

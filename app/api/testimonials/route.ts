@@ -3,6 +3,7 @@ import { z } from "zod";
 import AppDataSource from "../../../lib/db";
 import { Testimonial } from "../../../lib/entities/Testimonial";
 import { rateLimit } from "../../../lib/rate-limit";
+import { verifyAdminAuth } from "../../../lib/verify-auth";
 
 const testimonialSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name is too long"),
@@ -77,14 +78,9 @@ export async function POST(request: Request) {
 // PATCH: /api/testimonials - Approve a testimonial (admin only)
 export async function PATCH(request: Request) {
   try {
-    // TODO: Add admin authentication
-    // const session = await getServerSession(authOptions);
-    // if (!session?.user?.isAdmin) {
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized' },
-    //     { status: 401 }
-    //   );
-    // }
+    if (!verifyAdminAuth(request)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id } = await request.json();
 
