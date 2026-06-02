@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Leaf, MapPin, Sparkles, Users, Wallet } from "lucide-react";
 import Image from "next/image";
 
 const features = [
-  "Professional & Friendly Team",
-  "Reliable Local Service Across the UK",
-  "Affordable Rates for Every Budget",
-  "Expert Garden & Van Solutions",
+  { label: "Professional & Friendly Team", icon: Users },
+  { label: "Reliable Local Service Across the UK", icon: MapPin },
+  { label: "Affordable Rates for Every Budget", icon: Wallet },
+  { label: "Expert Garden & Van Solutions", icon: Leaf },
 ];
 
 export default function WhoWeAreSection() {
@@ -132,19 +132,19 @@ export default function WhoWeAreSection() {
 
             {/* Features */}
             <div>
-              {features.map((feature, index) => (
+              {features.map(({ label, icon: Icon }, index) => (
                 <motion.div
-                  key={feature}
+                  key={label}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
                   className="flex items-center gap-4 py-3 group border-b-2 border-gray-200"
                 >
                   <div className="w-12 h-12 bg-lime-400 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
-                    <Sparkles className="w-4 h-4 text-gray-900" />
+                    <Icon className="w-5 h-5 text-gray-900" />
                   </div>
                   <p className="text-gray-900 font-medium text-base">
-                    {feature}
+                    {label}
                   </p>
                 </motion.div>
               ))}

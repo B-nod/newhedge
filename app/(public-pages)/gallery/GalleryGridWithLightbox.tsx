@@ -124,7 +124,7 @@ export default function GalleryGridWithLightbox({ images }: GalleryGridWithLight
 
           {/* Image + spinner */}
           <div
-            className="relative w-[90vw] h-[85vh]"
+            className="relative w-[90vw] h-[85vh] flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
             {!imageLoaded && (
@@ -132,15 +132,12 @@ export default function GalleryGridWithLightbox({ images }: GalleryGridWithLight
                 <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
               </div>
             )}
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               key={images[lightboxIndex]}
               src={`/gallery/${encodeURIComponent(images[lightboxIndex])}`}
               alt={images[lightboxIndex]}
-              fill
-              className={`object-contain transition-opacity duration-300 rounded-lg ${imageLoaded ? "opacity-100" : "opacity-0"}`}
-              sizes="90vw"
-              quality={85}
-              priority
+              className={`object-contain max-h-[85vh] max-w-full w-auto h-auto rounded-lg transition-opacity duration-300 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
               onLoad={() => setImageLoaded(true)}
             />
           </div>
