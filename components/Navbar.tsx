@@ -11,6 +11,7 @@ export default function Navbar() {
   const pathname = usePathname();
   // const [authenticated, setAuthenticated] = useState(false);
 
+  const [authenticated, setAuthenticated] = useState(false);
   const isAdmin = pathname === "/admin";
   const navLinks = [
     { name: "Home", path: "/" },
@@ -19,10 +20,10 @@ export default function Navbar() {
     { name: "Gallery", path: "/gallery" },
     { name: "Testimonials", path: "/testimonials" },
     { name: "Contact", path: "/contact" },
-    // {
-    //   name: authenticated ? "Admin" : "Login",
-    //   path: authenticated ? "/admin" : "/admin/login",
-    // },
+    {
+      name: authenticated ? "Admin" : "Login",
+      path: authenticated ? "/admin" : "/admin/login",
+    },
   ];
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function Navbar() {
       try {
         const response = await fetch("/api/auth");
         const data = await response.json();
-        // setAuthenticated(data.authenticated);
+        setAuthenticated(data.authenticated);
       } catch (error) {
         console.error("Error checking authentication:", error);
       }
