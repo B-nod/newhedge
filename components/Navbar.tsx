@@ -20,10 +20,10 @@ export default function Navbar() {
     { name: "Gallery", path: "/gallery" },
     { name: "Testimonials", path: "/testimonials" },
     { name: "Contact", path: "/contact" },
-    {
-      name: authenticated ? "Admin" : "Login",
-      path: authenticated ? "/admin" : "/admin/login",
-    },
+    // {
+    //   name: authenticated ? "Admin" : "Login",
+    //   path: authenticated ? "/admin" : "/admin/login",
+    // },
   ];
 
   useEffect(() => {
